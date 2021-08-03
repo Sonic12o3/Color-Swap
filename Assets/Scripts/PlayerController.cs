@@ -85,4 +85,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public static void GameOver()
+    {
+
+    }
+
 }
