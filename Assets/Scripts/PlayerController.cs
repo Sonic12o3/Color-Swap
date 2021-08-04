@@ -8,10 +8,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 5;
     [SerializeField] private float jumpForce = 5;
     private Material defaultMaterial;
-    private Renderer renderer;
+    new private Renderer renderer;
     public Material red;
     public Material blue;
     public Material yellow;
+    public bool isJumping = true;
+    private string currentMaterial = "Default";
 
     // Start is called before the first frame update
     void Start()
@@ -36,13 +38,15 @@ public class PlayerController : MonoBehaviour
 
         //Changes color according to number press
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            ChangeColor("default");
+            ChangeColor("Default");
         else if (Input.GetKeyDown(KeyCode.Alpha2))
             ChangeColor("Red");
         else if (Input.GetKeyDown(KeyCode.Alpha3))
             ChangeColor("Blue");
         else if (Input.GetKeyDown(KeyCode.Alpha4))
             ChangeColor("Yellow");
+
+
     }
 
     void MoveHorizontal()
@@ -52,13 +56,14 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector3(moveAmount, rb.velocity.y, 0);
     }
 
-    void Jump()
+    public void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
     }
 
     void ChangeColor(string newColor)
     {
+        currentMaterial = newColor;
         Material newColorMat;
         if (newColor == "Red")
         {
@@ -85,9 +90,8 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public static void GameOver()
+    public string getMaterial()
     {
-
+        return currentMaterial;
     }
-
 }

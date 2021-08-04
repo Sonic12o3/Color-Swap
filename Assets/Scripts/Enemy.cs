@@ -37,4 +37,28 @@ public class Enemy : MonoBehaviour
             rb.position = new Vector3(xMax - 0.1f, rb.position.y, 0);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Collision(other);
+    }
+
+    public virtual void Collision(Collider other)
+    {
+        GameObject collider = other.gameObject;
+        if(collider.CompareTag("Player"))
+        {
+            //Gets PlayerControlelr script
+            PlayerController pc = collider.GetComponent<PlayerController>();
+            //If player isn't jumping then it's a game over, but if it is then destroy enemy
+            if (!pc.isJumping)
+                GameManager.gameOver();
+            else
+            {
+                Destroy(gameObject);
+                pc.Jump();
+            }
+        }
+    }
+
 }
