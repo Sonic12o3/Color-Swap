@@ -8,11 +8,12 @@ public class SceneManagement : MonoBehaviour
     //Loads the main game scene
     public void StartTheGame()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void BackToMain()
     {
-        SceneManager.LoadScene(1);
+        Debug.Log("WHY ISN'T THIS WORKING???");
+        SceneManager.LoadScene(0);
     }
 }

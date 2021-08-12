@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public Image palatteSelectorBlue;
     public Image palatteSelectorYellow;
 
+    private AudioSource jumpSound;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         renderer = GetComponent<Renderer>();
         defaultMaterial = renderer.material;
+        jumpSound = GetComponent<AudioSource>();
         
     }
 
@@ -75,6 +78,7 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
+        jumpSound.Play();
     }
 
     void ChangeColor(string newColor)
