@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,8 +13,15 @@ public class PlayerController : MonoBehaviour
     public Material red;
     public Material blue;
     public Material yellow;
-    public bool isJumping = true;
+    public bool isJumping = false;
     private string currentMaterial = "Default";
+    [SerializeField] private bool isGrounded;
+
+    public Image palatteSelectorBlack;
+    public Image palatteSelectorRed;
+    public Image palatteSelectorBlue;
+    public Image palatteSelectorYellow;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,9 +38,12 @@ public class PlayerController : MonoBehaviour
         //Horizontal Movement
         MoveHorizontal();
 
+
         //Jumps if space is pressed
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
+            isJumping = true;
+            isGrounded = false;
             Jump();
         }
 
@@ -46,6 +57,11 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4))
             ChangeColor("Yellow");
 
+        //Game Over Check
+        if(rb.transform.position.y <= -10)
+        {
+            GameManager.gameOver();
+        }
 
     }
 
@@ -63,29 +79,35 @@ public class PlayerController : MonoBehaviour
 
     void ChangeColor(string newColor)
     {
+        PalatteSelect(newColor);
         currentMaterial = newColor;
         Material newColorMat;
-        if (newColor == "Red")
+
+        //Changes the physics layer and material of the player
+        switch (newColor)
         {
-            newColorMat = red;
-            gameObject.layer = 10;
+            case "Red":
+                newColorMat = red;
+                gameObject.layer = 10;
+                renderer.material = newColorMat;
+                break;
+            case "Blue":
+                newColorMat = blue;
+                gameObject.layer = 11;
+                renderer.material = newColorMat;
+                break;
+            case "Yellow":
+                newColorMat = yellow;
+                gameObject.layer = 12;
+                renderer.material = newColorMat;
+                break;
+            case "Default":
+                newColorMat = defaultMaterial;
+                gameObject.layer = 9;
+                renderer.material = newColorMat;
+                break;
         }
-        else if (newColor == "Blue")
-        {
-            newColorMat = blue;
-            gameObject.layer = 11;
-        }
-        else if (newColor == "Yellow")
-        {
-            newColorMat = yellow;
-            gameObject.layer = 12;
-        }
-        else
-        { 
-            newColorMat = defaultMaterial;
-            gameObject.layer = 9;
-        }
-        renderer.material = newColorMat;
+        
         Debug.Log("Changed color to " + newColor);
 
     }
@@ -94,4 +116,57 @@ public class PlayerController : MonoBehaviour
     {
         return currentMaterial;
     }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("ground"))
+        {
+            isGrounded = true;
+            isJumping = false;
+        }
+    }
+
+    //You might want to get rid of this? Kinda finicky
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("ground") && isJumping == true)
+        {
+            isGrounded = false;
+            isJumping = true;
+        }
+    }
+
+    //Sets the Palatte Selector of the specific color on, while turning the others off
+    private void PalatteSelect(string color)
+    {
+        switch (color)
+        {
+            case "Red":
+                palatteSelectorRed.gameObject.SetActive(true);
+                palatteSelectorBlue.gameObject.SetActive(false);
+                palatteSelectorYellow.gameObject.SetActive(false);
+                palatteSelectorBlack.gameObject.SetActive(false);
+                break;
+            case "Blue":
+                palatteSelectorRed.gameObject.SetActive(false);
+                palatteSelectorBlue.gameObject.SetActive(true);
+                palatteSelectorYellow.gameObject.SetActive(false);
+                palatteSelectorBlack.gameObject.SetActive(false);
+                break;
+            case "Yellow":
+                palatteSelectorRed.gameObject.SetActive(false);
+                palatteSelectorBlue.gameObject.SetActive(false);
+                palatteSelectorYellow.gameObject.SetActive(true);
+                palatteSelectorBlack.gameObject.SetActive(false);
+                break;
+            case "Default":
+                palatteSelectorRed.gameObject.SetActive(false);
+                palatteSelectorBlue.gameObject.SetActive(false);
+                palatteSelectorYellow.gameObject.SetActive(false);
+                palatteSelectorBlack.gameObject.SetActive(true);
+                break;
+        }
+    }
+
+   
 }

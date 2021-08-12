@@ -26,13 +26,11 @@ public class Enemy : MonoBehaviour
         rb.velocity = new Vector3(speed, rb.velocity.y, 0);
         if (rb.position.x < xMin)
         {
-            Debug.Log("turn1");
             speed = -speed;
             rb.position = new Vector3(xMin + 0.1f, rb.position.y, 0);
         }
         else if (rb.position.x > xMax)
         {
-            Debug.Log("turn2");
             speed = -speed;
             rb.position = new Vector3(xMax - 0.1f, rb.position.y, 0);
         }
