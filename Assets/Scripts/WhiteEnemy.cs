@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// INHERITANCE
 public class WhiteEnemy : Enemy
 {
+    // POLYMORPHISM
     public override void Collision(Collider other)
     {
         GameObject collider = other.gameObject;

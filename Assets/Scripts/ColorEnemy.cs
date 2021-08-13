@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// INHERITANCE
 public class ColorEnemy : Enemy
 {
     [SerializeField] private string currentMaterial;
 
+    // POLYMORPHISM
     public override void Collision(Collider other)
     {
         GameObject collider = other.gameObject;

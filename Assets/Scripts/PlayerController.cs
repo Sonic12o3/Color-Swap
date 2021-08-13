@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
+    //Abstraction
     void MoveHorizontal()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -81,6 +83,7 @@ public class PlayerController : MonoBehaviour
         jumpSound.Play();
     }
 
+    //ABSTRACTION
     void ChangeColor(string newColor)
     {
         PalatteSelect(newColor);
@@ -116,6 +119,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // ENCAPSULATION
     public string getMaterial()
     {
         return currentMaterial;
